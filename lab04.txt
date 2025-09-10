@@ -1,0 +1,78 @@
+###################################################
+# MC102 - Algoritmos e Programação de Computadores
+# Laboratório 4 - Batalha na Ponte de Piltover I
+# Nome:
+# RA:
+###################################################
+
+# Leitura dos parametros da batalha
+Vj = int(input())  # Vida máxima da Jinx
+Ve = int(input())  # Vida máxima do Ekko
+Dj = int(input())  # Dano base da Jinx
+De = int(input())  # Dano base do Ekko
+Rj = int(input())  # Porcentagem de cura da Jinx
+Re = int(input())  # Porcentagem de cura do Ekko
+Cj = int(input())  # Golpes até crítico da Jinx
+Ce = int(input())  # Golpes até crítico do Ekko
+
+# Inicialização das vidas atuais
+vida_j = Vj
+vida_e = Ve
+
+# Contadores de golpes consecutivos
+cont_j = 0
+cont_e = 0
+
+# Leitura da sequência de ataques e processamento
+vencedor = None
+while True:
+    atacante = input().strip()
+
+    if atacante == 'J':
+        # Jinx ataca
+        cont_j += 1
+        cont_e = 0  # Reseta contador do Ekko
+
+        # Verifica se é golpe crítico
+        if cont_j == Cj:
+            dano = Dj * 2
+            cont_j = 0  # Reseta contador após crítico
+        else:
+            dano = Dj
+
+        # Aplica dano no Ekko
+        vida_e -= dano
+
+        # Verifica se Ekko foi derrotado
+        if vida_e <= 0:
+            vencedor = "Jinx"
+            break
+
+        # Jinx se cura (após o ataque)
+        vida_j = min(Vj, vida_j + (Rj * Vj) // 100)
+
+    elif atacante == 'E':
+        # Ekko ataca
+        cont_e += 1
+        cont_j = 0  # Reseta contador da Jinx
+
+        # Verifica se é golpe crítico
+        if cont_e == Ce:
+            dano = De * 2
+            cont_e = 0  # Reseta contador após crítico
+        else:
+            dano = De
+
+        # Aplica dano na Jinx
+        vida_j -= dano
+
+        # Verifica se Jinx foi derrotada
+        if vida_j <= 0:
+            vencedor = "Ekko"
+            break
+
+        # Ekko se cura (após o ataque)
+        vida_e = min(Ve, vida_e + (Re * Ve) // 100)
+
+# Saída do vencedor
+print(vencedor)
